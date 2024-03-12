@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import shop.mtcoding.blog.util.MyDateUtil;
 
 import java.sql.Timestamp;
 
@@ -20,4 +21,9 @@ public class Board {
     private String content;
     private String username;
     private Timestamp createdAt;
+
+    public String getTime(){
+        return MyDateUtil.timestampFormat(createdAt);
+    }
+
 }
