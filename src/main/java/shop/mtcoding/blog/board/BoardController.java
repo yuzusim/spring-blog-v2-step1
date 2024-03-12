@@ -1,11 +1,14 @@
 package shop.mtcoding.blog.board;
 
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @Controller
@@ -14,7 +17,10 @@ public class BoardController {
     private final BoardNativeRepository boardNativeRepository;
 
     @GetMapping("/" )
-    public String index() {
+    public String index(HttpServletRequest request) {
+        List<Board> boardList = boardNativeRepository.findAll();
+        // List<Board> 실제로는 Board 객체가 아닌 boardDTO를 만들어서 줘야 함
+        request.setAttribute("boardList", boardList);
         return "index";
     }
 
