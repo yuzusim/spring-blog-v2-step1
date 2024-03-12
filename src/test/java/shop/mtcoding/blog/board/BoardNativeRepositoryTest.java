@@ -17,7 +17,26 @@ public class BoardNativeRepositoryTest {
     private BoardNativeRepository boardNativeRepository;
 
     @Test
-    public void deleteById_test(){
+    public void updateById_test() {
+        // given
+        int id = 1;
+        String title = "제목수정1";
+        String content = "내용수정1";
+        String username = "bori";
+
+        // when
+        boardNativeRepository.updateById(id, title, content, username);
+
+        // then
+        Board board = boardNativeRepository.findById(id);
+        System.out.println("updateById_test/board : " + board);
+        assertThat(board.getTitle()).isEqualTo("제목수정1");
+        assertThat(board.getContent()).isEqualTo("내용수정1");
+        assertThat(board.getUsername()).isEqualTo("bori");
+    }
+
+    @Test
+    public void deleteById_test() {
         // given
         int id = 1;
 
@@ -30,7 +49,7 @@ public class BoardNativeRepositoryTest {
     }
 
     @Test
-    public void findById_test(){
+    public void findById_test() {
         // given
         int id = 1;
 
@@ -44,15 +63,15 @@ public class BoardNativeRepositoryTest {
     }
 
     @Test
-    public void findAll_test(){
+    public void findAll_test() {
         // given
 
         // when
         List<Board> boardList = boardNativeRepository.findAll();
 
         // then
-        System.out.println("findAll_test/size : "+boardList.size());
-        System.out.println("findAll_test/username : "+boardList.get(2).getUsername());
+        System.out.println("findAll_test/size : " + boardList.size());
+        System.out.println("findAll_test/username : " + boardList.get(2).getUsername());
 
         // org.assertj.core.api
         assertThat(boardList.size()).isEqualTo(4);
