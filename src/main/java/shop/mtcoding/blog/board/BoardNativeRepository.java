@@ -13,14 +13,14 @@ import java.util.List;
 public class BoardNativeRepository {
     private final EntityManager em;
 
-    public List<Board> findAll(){
+    public List<Board> findAll() {
         Query query =
                 em.createNativeQuery("select * from board_tb order by id desc", Board.class);
         return (List<Board>) query.getResultList(); // 정확한 건 앞에 다운 캐스팅(하지만 않해도 됨)
 
     }
 
-    public Board findById(int id){
+    public Board findById(int id) {
         Query query =
                 em.createNativeQuery("select * from board_tb where id = ?", Board.class);
         query.setParameter(1, id);
@@ -28,7 +28,7 @@ public class BoardNativeRepository {
     }
 
     @Transactional
-    public void save(String title, String content, String username){
+    public void save(String title, String content, String username) {
         Query query =
                 em.createNativeQuery("insert into board_tb(title, content, username, created_at) values(?,?,?,now())");
         query.setParameter(1, title);
@@ -36,6 +36,14 @@ public class BoardNativeRepository {
         query.setParameter(3, username);
 
         query.executeUpdate();
+    }
+
+    @Transactional
+    public void deleteById(int id) {
+        Query query = em.createNativeQuery("delete from board_tb where id = ?");
+        query.setParameter(1, id);
+        query.executeUpdate();
+
     }
 
 }
