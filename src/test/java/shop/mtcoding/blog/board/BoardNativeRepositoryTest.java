@@ -1,5 +1,6 @@
 package shop.mtcoding.blog.board;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -15,6 +16,21 @@ public class BoardNativeRepositoryTest {
 
     @Autowired // DI
     private BoardNativeRepository boardNativeRepository;
+
+    @Test
+    public void findById_test() {
+       // given
+        int id = 1 ;
+
+       // when
+        Board board = boardNativeRepository.findById(id);
+        System.out.println("findById_test : "+board);
+
+       // then
+        assertThat(board.getTitle()).isEqualTo("제목");
+        assertThat(board.getContent()).isEqualTo("내용1");
+
+    }
 
     @Test
     public void findAll_test(){

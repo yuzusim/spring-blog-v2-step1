@@ -19,6 +19,14 @@ public class BoardNativeRepository {
         return (List<Board>) query.getResultList(); // 정확한 건 앞에 다운 캐스팅(하지만 않해도 됨)
 
     }
+
+    public Board findById(int id){
+        Query query =
+                em.createNativeQuery("select * from board_tb where id = ?", Board.class);
+        query.setParameter(1, id);
+        return (Board) query.getSingleResult();
+    }
+
     @Transactional
     public void save(String title, String content, String username){
         Query query =
