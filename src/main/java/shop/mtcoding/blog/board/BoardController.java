@@ -15,6 +15,7 @@ import java.util.List;
 public class BoardController {
 
     private final BoardNativeRepository boardNativeRepository;
+    private final BoardPersistRepository boardPersistRepository;
 
     @GetMapping("/")
     public String index(HttpServletRequest request) {
@@ -30,12 +31,12 @@ public class BoardController {
     }
 
     @PostMapping("/board/save")
-    public String save(String title, String content, String username) {
+    public String save(BoardRequest.SaveDTO reqDTO) { // 값을 받는 건 DTO로 받음
 //        System.out.println("title : "+title);
 //        System.out.println("content : "+content);
 //        System.out.println("username : "+username);
 
-        boardNativeRepository.save(title, content, username);
+        boardPersistRepository.save(reqDTO.toEntitiy()); // DTO 받아서 toEntity 메서드로 호출
         return "redirect:/";
     }
 
@@ -51,8 +52,8 @@ public class BoardController {
 //        System.out.println("id : " +id);
 //        System.out.println("title : " +title);
 //        System.out.println("content : " +content);
-//        System.out.println("username : " +username);
-        boardNativeRepository.updateById(id, title, content, username);
+//        System.out.println("username : " +);
+
         return "redirect:/board/" + id;
     }
 
