@@ -38,18 +38,15 @@ public class BoardController {
 
     @GetMapping("/board/{id}/update-form")
     public String updateForm(@PathVariable int id, HttpServletRequest request) {
-        Board board = boardNativeRepository.findById(id);
+        Board board = boardPersistRepository.findById(id);
         request.setAttribute("board", board);
         return "/board/update-form";
     }
 
     @PostMapping("/board/{id}/update")
-    public String update(@PathVariable Integer id, String title, String content, String username){
-//        System.out.println("id : " +id);
-//        System.out.println("title : " +title);
-//        System.out.println("content : " +content);
-//        System.out.println("username : " +);
-
+    public String update(@PathVariable Integer id, BoardRequest.UpdateDTO reqDTO){
+        // 조회해서 영속화 시킴. 객체의 상태만 바꾸면 끝!
+        boardPersistRepository.updateById(id, reqDTO);
         return "redirect:/board/" + id;
     }
 

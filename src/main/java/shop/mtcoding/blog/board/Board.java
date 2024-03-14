@@ -35,4 +35,11 @@ public class Board {
         this.username = username;
     }
 
+    // 오브젝트 지향 프로그램이라서 업데이트 메서드를 만들어 주고 한번에 변경
+    // 다른 곳에서 재사용하려면 DTO 이름을 적을 수 없다!
+    public void update(BoardRequest.UpdateDTO reqDTO) {
+        this.title = reqDTO.getTitle();
+        this.content = reqDTO.getContent();
+        this.username = reqDTO.getUsername();
+    }
 }

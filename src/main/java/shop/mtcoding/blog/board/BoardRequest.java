@@ -17,4 +17,15 @@ public class BoardRequest {
         }
 
     }
+
+    @Data
+    public static class UpdateDTO{
+        private String title;
+        private String content;
+        private String username;
+
+        // 애를 엔티티로 바꿔서 save 하지 않을거니 toEntity 필요 없다!
+        // 업데이트 필드는 같아도 로직은 다를 수 있음
+    }
+
 }

@@ -52,9 +52,11 @@ public class BoardPersistRepository {
     }
 
     @Transactional
-    public void updateById(){
-
-    }
+    public void updateById(int id, BoardRequest.UpdateDTO reqDTO){
+        Board board = findById(id);
+        board.update(reqDTO);
+    } // 더티체킹
+    // 데이터 베이스에 동기화된 pc
 
 
 
