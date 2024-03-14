@@ -69,4 +69,30 @@ public class BoardPersistRepositoryTest {
 
     }
 
+    @Test
+    public void deleteByIdV2_test() {
+        // given
+        int id = 1;
+
+        // when
+        boardPersistRepository.deleteByIdV2(id);
+
+        // 이 라인 쿼리, 트랜잭션 종료되지 않았지만 강제로 날려 보냄
+        em.flush();
+
+        Board board = boardPersistRepository.findById(id);
+        System.out.println("findById_test " + board);
+    }
+
+    @Test
+    public void deleteById_test(){
+        // given
+        int id = 1;
+
+        // when
+        boardPersistRepository.deleteById(id);
+    }
+
+
+
 }

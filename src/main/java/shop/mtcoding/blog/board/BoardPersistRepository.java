@@ -36,10 +36,19 @@ public class BoardPersistRepository {
         // 콜바이 밸류가 아니라 콜바이 래퍼런스 이제는 return도 적을 필요가 없다
     }
 
+    //이거 안 쓸 거다. 밑에 있는 deleteById를 사용할 것이다!
+    @Transactional
+    public void deleteByIdV2(int id) {
+        Board board = findById(id);
+        //근데 remove가 어떻게 동작하는지 궁금하니 테스트 해보자!
+        em.remove(board);
+    }
 
     @Transactional
-    public void deleteById() {
-
+    public void deleteById(int id) {
+        Query query = em.createQuery("delete from Board b where b.id = :id");
+        query.setParameter("id", id);
+        query.executeUpdate();
     }
 
     @Transactional
