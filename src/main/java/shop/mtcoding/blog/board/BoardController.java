@@ -19,7 +19,7 @@ public class BoardController {
 
     @GetMapping("/")
     public String index(HttpServletRequest request) {
-        List<Board> boardList = boardNativeRepository.findAll();
+        List<Board> boardList = boardPersistRepository.findAll();
         // List<Board> 실제로는 Board 객체가 아닌 boardDTO를 만들어서 줘야 함
         request.setAttribute("boardList", boardList);
         return "index";
@@ -32,10 +32,6 @@ public class BoardController {
 
     @PostMapping("/board/save")
     public String save(BoardRequest.SaveDTO reqDTO) { // 값을 받는 건 DTO로 받음
-//        System.out.println("title : "+title);
-//        System.out.println("content : "+content);
-//        System.out.println("username : "+username);
-
         boardPersistRepository.save(reqDTO.toEntitiy()); // DTO 받아서 toEntity 메서드로 호출
         return "redirect:/";
     }

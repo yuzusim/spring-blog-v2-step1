@@ -14,7 +14,8 @@ public class BoardPersistRepository {
     private final EntityManager em;
 
     public List<Board> findAll() {
-        return null;
+        Query query = em.createQuery("select b from Board b order by b.id desc", Board.class);
+        return query.getResultList();
     }
 
     public Board findById() {
