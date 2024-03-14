@@ -1,26 +1,51 @@
 package shop.mtcoding.blog.board;
 
-import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import shop.mtcoding.blog.user.User;
 
 import java.util.List;
 
-@RequiredArgsConstructor
-@Controller
+@RequiredArgsConstructor // final이 붙은 친구들의 생성자를 만들어줘
+@Controller // new BoardController(IoC에서 BoardRepository를 찾아서 주입) -> IoC 컨테이너 등록
 public class BoardController {
 
-    private final BoardNativeRepository boardNativeRepository;
-    private final BoardPersistRepository boardPersistRepository;
+    private final BoardRepository boardRepository;
+    private final HttpSession session;
+
+    @PostMapping("/board/save")
+    public String save(BoardRequest.SaveDTO reqDTO) {
+        User sessionUser = (User) session.getAttribute("sessionUser");
+        // toEntitiy 인서트 할때만 만든다
+        boardRepository.save(reqDTO.toEntitiy(sessionUser));
+
+        return "redirect:/";
+    }
+
+    @PostMapping("/board/{id}/update")
+    public String update(@PathVariable Integer id) {
+        return "redirect:/board/" + id;
+    }
+
+    @GetMapping("/board/{id}/update-form")
+    public String updateForm(@PathVariable Integer id, HttpServletRequest request) {
+        return "board/update-form";
+    }
+
+    @PostMapping("/board/{id}/delete")
+    public String delete(@PathVariable Integer id) {
+        return "redirect:/";
+    }
 
     @GetMapping("/")
     public String index(HttpServletRequest request) {
-        List<Board> boardList = boardPersistRepository.findAll();
-        // List<Board> 실제로는 Board 객체가 아닌 boardDTO를 만들어서 줘야 함
+        List<Board> boardList = boardRepository.findAll();
         request.setAttribute("boardList", boardList);
         return "index";
     }
@@ -30,36 +55,16 @@ public class BoardController {
         return "board/save-form";
     }
 
-    @PostMapping("/board/save")
-    public String save(BoardRequest.SaveDTO reqDTO) { // 값을 받는 건 DTO로 받음
-        boardPersistRepository.save(reqDTO.toEntitiy()); // DTO 받아서 toEntity 메서드로 호출
-        return "redirect:/";
-    }
-
-    @GetMapping("/board/{id}/update-form")
-    public String updateForm(@PathVariable int id, HttpServletRequest request) {
-        Board board = boardPersistRepository.findById(id);
-        request.setAttribute("board", board);
-        return "/board/update-form";
-    }
-
-    @PostMapping("/board/{id}/update")
-    public String update(@PathVariable Integer id, BoardRequest.UpdateDTO reqDTO){
-        // 조회해서 영속화 시킴. 객체의 상태만 바꾸면 끝!
-        boardPersistRepository.updateById(id, reqDTO);
-        return "redirect:/board/" + id;
-    }
-
-    @PostMapping("/board/{id}/delete")
-    public String delete(@PathVariable Integer id) {
-        boardPersistRepository.deleteById(id);
-        return "redirect:/";
-    }
-
     @GetMapping("/board/{id}")
     public String detail(@PathVariable Integer id, HttpServletRequest request) {
-        Board board = boardPersistRepository.findById(id);
+        // Integer쓰는 이유 안들어 오면 null 이니까
+
+        Board board = boardRepository.findByIdJoinUser(id);
         request.setAttribute("board", board);
         return "board/detail";
     }
+
+
+
+
 }

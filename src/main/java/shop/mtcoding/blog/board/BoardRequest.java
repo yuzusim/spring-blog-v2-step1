@@ -1,6 +1,7 @@
 package shop.mtcoding.blog.board;
 
 import lombok.Data;
+import shop.mtcoding.blog.user.User;
 
 public class BoardRequest {
 
@@ -8,24 +9,16 @@ public class BoardRequest {
     public static class SaveDTO{
         private String title;
         private String content;
-        private String username;
 
-        // DTO를 Entity로 바꾸는 메서드 만들기 인서트 할때만 필요, 3개만 들고
-        // 다른 DTO에서 만들 필요가 없음
-        public Board toEntitiy(){ // 비영속 객체 동기화 되지 않음, 인서트 할때 바뀜
-            return new Board(title, content, username);
+        // DTO를 클라이언트로부터 받아서, PC에 전달하기 위해 사용
+        public Board toEntitiy(User user){ // 유저 객체 넣어 줌
+            return Board.builder()
+                    .title(title)
+                    .content(content)
+                    .user(user) // PK만 들어 있어도 됨
+                    .build();
         }
-
     }
 
-    @Data
-    public static class UpdateDTO{
-        private String title;
-        private String content;
-        private String username;
-
-        // 애를 엔티티로 바꿔서 save 하지 않을거니 toEntity 필요 없다!
-        // 업데이트 필드는 같아도 로직은 다를 수 있음
-    }
 
 }

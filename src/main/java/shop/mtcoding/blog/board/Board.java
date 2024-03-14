@@ -1,45 +1,45 @@
 package shop.mtcoding.blog.board;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
+import shop.mtcoding.blog.user.User;
 import shop.mtcoding.blog.util.MyDateUtil;
 
 import java.sql.Timestamp;
 
-@NoArgsConstructor // 기본생성자 있어야 함
+@NoArgsConstructor
 @Data
 @Table(name = "board_tb")
 @Entity
-public class Board {
+public class Board { // Entity 무조건 기본 생성자가 있어야 오류 나지 않음 @NoArgsConstructor
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String title;
     private String content;
-    private String username;
 
-    // 날짜 자동 넣고 싶을때 pc 통해서 insert 될때 -> db (날짜자동주입)
+    // @JoinColumn(name = "user_id") // 카멜 표기법 써서 DB에 직접 하고 싶으면 userId
+    @ManyToOne // user_id 유저명의 id(유저의 pk) 필드로 만들어 줄께
+    private User user; // 유저 객체를 넣음
+
+
+    // private String username;
+
     @CreationTimestamp // pc -> db (날짜주입)
     private Timestamp createdAt;
 
-//    public String getTime(){
-//        return MyDateUtil.timestampFormat(createdAt);
-//    }
-
-    // 생성자 만들기 (필요한 것만)
-    public Board(String title, String content, String username) {
+    // 생성자 빌더 패턴으로 받기
+    @Builder //  필요한것만 .해서 쓰면 됨
+    public Board(Integer id, String title, String content, User user, Timestamp createdAt) {
+        this.id = id;
         this.title = title;
         this.content = content;
-        this.username = username;
-    }
-
-    // 오브젝트 지향 프로그램이라서 업데이트 메서드를 만들어 주고 한번에 변경
-    // 다른 곳에서 재사용하려면 DTO 이름을 적을 수 없다!
-    public void update(BoardRequest.UpdateDTO reqDTO) {
-        this.title = reqDTO.getTitle();
-        this.content = reqDTO.getContent();
-        this.username = reqDTO.getUsername();
+        this.user = user;
+        this.createdAt = createdAt;
     }
 }
