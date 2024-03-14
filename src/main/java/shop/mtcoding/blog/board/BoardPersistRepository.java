@@ -18,8 +18,9 @@ public class BoardPersistRepository {
         return query.getResultList();
     }
 
-    public Board findById() {
-        return null;
+    public Board findById(int id) {
+        Board board = em.find(Board.class, id); // 앞이 클래스, 뒤가 PK
+        return board;
     }
 
 
