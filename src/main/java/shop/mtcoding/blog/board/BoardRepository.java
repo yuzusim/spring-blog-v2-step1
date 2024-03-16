@@ -18,22 +18,15 @@ public class BoardRepository {
         em.persist(board);
     }
 
-    public List<Board> findAll() {
-        Query query = em.createQuery("select b from Board b order by b.id desc", Board.class);
+    public List<Board> findAll(){
+        Query query =
+                em.createQuery("select b from Board b order by b.id desc", Board.class);
         return query.getResultList();
     }
 
-//    public Board findByIdJoinUser(int id) {
-//        Query query = em.createQuery("select b from Board b join fetch b.user u where b.id = :id", Board.class);
-//        query.setParameter("id", id);
-//        return (Board) query.getSingleResult();
-//    }
-
     public Board findByIdJoinUser(int id){
-//        Query query = em.createQuery("select b from Board b join fetch b.user u where b.id = :id", Board.class);
-//        query.setParameter("id", id);
-//        return (Board) query.getSingleResult();
-        Query query = em.createQuery("select b from Board b join fetch b.user u where b.id = :id", Board.class);
+        Query query =
+                em.createQuery("select b from Board b join fetch b.user u where b.id = :id", Board.class);
         query.setParameter("id", id);
         return (Board) query.getSingleResult();
         // 알아서 pk, fk 키 연결
