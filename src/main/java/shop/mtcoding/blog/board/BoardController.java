@@ -58,10 +58,10 @@ public class BoardController {
     @GetMapping("/board/{id}")
     public String detail(@PathVariable Integer id, HttpServletRequest request) {
         // Integer쓰는 이유 안들어 오면 null 이니까
-
         Board board = boardRepository.findByIdJoinUser(id);
         request.setAttribute("board", board);
         return "board/detail";
+
     }
 
 
