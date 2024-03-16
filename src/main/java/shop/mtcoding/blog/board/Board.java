@@ -24,7 +24,7 @@ public class Board { // Entity 무조건 기본 생성자가 있어야 오류 �
     private String content;
 
     // @JoinColumn(name = "user_id") // 카멜 표기법 써서 DB에 직접 하고 싶으면 userId
-    @ManyToOne // user_id 유저명의 id(유저의 pk) 필드로 만들어 줄께
+    @ManyToOne (fetch = FetchType.LAZY) // user_id 유저명의 id(유저의 pk) 필드로 만들어 줄께
     private User user; // 유저 객체를 넣음
 
 
