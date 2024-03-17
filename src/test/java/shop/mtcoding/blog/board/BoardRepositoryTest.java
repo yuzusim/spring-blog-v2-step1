@@ -15,6 +15,19 @@ public class BoardRepositoryTest {
     private  BoardRepository boardRepository;
 
     @Test
+    public void deleteById_test() {
+       // given
+        int id = 1;
+
+       // when
+        boardRepository.deleteById(id); // delete query 발동함
+
+       // then
+        System.out.println("deleteById_test : "+boardRepository.findAll().size());
+
+    }
+
+    @Test
     public void findAll_lazyloding_test() {
        // given
 

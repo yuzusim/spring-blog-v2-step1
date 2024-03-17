@@ -22,4 +22,11 @@ public class UserRepository {
         return (User) query.getSingleResult();
     }
 
+    public User findByUsernameAndPassword(String username, String password) {
+        Query query =
+                em.createQuery("select u from User u where u.username = :username and u.password = :password", User.class);
+        query.setParameter("username", username);
+        query.setParameter("password", password);
+        return (User) query.getSingleResult();
+    }
 }

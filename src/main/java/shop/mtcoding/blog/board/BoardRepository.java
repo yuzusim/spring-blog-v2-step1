@@ -14,6 +14,15 @@ public class BoardRepository {
     private final EntityManager em;
 
     @Transactional
+    public void deleteById(int id){
+        // delete는 em.remove 사용하지 말고, 쿼리문을 적어야함!
+        // 게시글(Board) 테이블에서 특정 ID에 해당하는 게시글을 삭제하는 쿼리
+        Query query = em.createQuery("delete from Board b where b.id = :id");
+        query.setParameter("id", id);
+        query.executeUpdate();
+    }
+
+    @Transactional
     public Board save(Board board){
         em.persist(board);
         return board;
