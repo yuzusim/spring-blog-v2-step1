@@ -14,6 +14,14 @@ public class BoardRepository {
     private final EntityManager em;
 
     @Transactional
+    public void updeteById(int id, String title, String content){
+        Board board = findById(id); // 주어진 id에 해당하는 게시글을 조회
+        board.setTitle(title);
+        board.setContent(content);
+        // 터티체킹
+    }
+
+    @Transactional
     public void deleteById(int id){
         // delete는 em.remove 사용하지 말고, 쿼리문을 적어야함!
         // 게시글(Board) 테이블에서 특정 ID에 해당하는 게시글을 삭제하는 쿼리

@@ -4,6 +4,11 @@ import lombok.Data;
 import shop.mtcoding.blog.user.User;
 
 public class BoardRequest {
+    @Data
+    public static class UpdateDTO{
+        private String title;
+        private String content;
+    }
 
     @Data
     public static class SaveDTO{
@@ -19,6 +24,4 @@ public class BoardRequest {
                     .build();
         }
     }
-
-
 }
