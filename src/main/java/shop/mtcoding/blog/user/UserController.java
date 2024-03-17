@@ -24,7 +24,6 @@ public class UserController {
         return "redirect:/";
     }
 
-
     @GetMapping("/join-form")
     public String joinForm() {
         return "user/join-form";
@@ -40,12 +39,10 @@ public class UserController {
         return "user/update-form";
     }
 
-
-
-
     @GetMapping("/logout")
     public String logout() {
-        session.invalidate();
+        session.invalidate(); // 세션(session)을 무효화(invalidate)하는 작업을 수행
         return "redirect:/";
     }
 }
+
